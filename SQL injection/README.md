@@ -395,7 +395,7 @@ Blacklist using keywords case insensitive - bypass using an equivalent operator
 ```sql
 AND   -> && -> %26%26
 OR    -> || -> %7C%7C
-=     -> LIKE,REGEXP, not < and not >
+=     -> LIKE,REGEXP,RLIKE, not < and not >
 > X   -> not between 0 and X
 WHERE -> HAVING --> LIMIT X,1 -> group_concat(CASE(table_schema)When(database())Then(table_name)END) -> group_concat(if(table_schema=database(),table_name,null))
 ```
