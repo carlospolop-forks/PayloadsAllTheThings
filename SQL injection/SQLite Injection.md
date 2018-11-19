@@ -10,12 +10,21 @@
 ## SQLite version
 
 ```sql
-select sqlite_version();
+sqlite_version();
+substr(x,y,z);
+length(stuff);
+count(1);
+select cast(X'22' as text)='"';
+select 'b'||'a'='ba';
 ```
 
 ## Integer/String based - Extract table name
 
 ```sql
+-- All tables
+SELECT tbl_name FROM sqlite_master;
+
+-- Specific tables
 SELECT tbl_name FROM sqlite_master WHERE type='table' and tbl_name NOT like 'sqlite_%'
 ```
 
@@ -24,13 +33,14 @@ Use limit X+1 offset X, to extract all tables.
 ## Integer/String based - Extract column name
 
 ```sql
-SELECT sql FROM sqlite_master WHERE type!='meta' AND sql NOT NULL AND name NOT LIKE 'sqlite_%' AND name ='table_name'
+SELECT sql FROM sqlite_master
+SELECT sql FROM sqlite_master WHERE type!='meta' AND sql NOT NULL AND name NOT LIKE 'sqlite_%' AND name ='<TABLE_NAME>'
 ```
 
 For a clean output
 
 ```sql
-SELECT replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(substr((substr(sql,instr(sql,'(')%2b1)),instr((substr(sql,instr(sql,'(')%2b1)),'')),"TEXT",''),"INTEGER",''),"AUTOINCREMENT",''),"PRIMARY KEY",''),"UNIQUE",''),"NUMERIC",''),"REAL",''),"BLOB",''),"NOT NULL",''),",",'~~') FROM sqlite_master WHERE type!='meta' AND sql NOT NULL AND name NOT LIKE 'sqlite_%' AND name ='table_name'
+SELECT replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(substr((substr(sql,instr(sql,'(')%2b1)),instr((substr(sql,instr(sql,'(')%2b1)),'')),"TEXT",''),"INTEGER",''),"AUTOINCREMENT",''),"PRIMARY KEY",''),"UNIQUE",''),"NUMERIC",''),"REAL",''),"BLOB",''),"NOT NULL",''),",",'~~') FROM sqlite_master WHERE type!='meta' AND sql NOT NULL AND name NOT LIKE 'sqlite_%' AND name ='<TABLE_NAME>'
 ```
 
 ## Boolean - Count number of tables
