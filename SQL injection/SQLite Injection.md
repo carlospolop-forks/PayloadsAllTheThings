@@ -22,7 +22,7 @@ select 'b'||'a'='ba';
 
 ```sql
 -- All tables
-SELECT tbl_name FROM sqlite_master;
+SELECT group_concat(tbl_name) FROM sqlite_master;
 
 -- Specific tables
 SELECT tbl_name FROM sqlite_master WHERE type='table' and tbl_name NOT like 'sqlite_%'
